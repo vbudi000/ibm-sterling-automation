@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: "mq"
+  namespace: "sterling-b2bi-dev01-mq"
+spec:
+  selector:
+    matchLabels:
+      app: "mq"
+  serviceName: "mq"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: "mq"
+    spec:
+      serviceAccount: "mymq-sa"
+      containers:
+        - name: "mq"
+          securityContext:
+            privileged: true
+          image: icr.io/ibm-messaging/mq:9.2.5.0-r3
+          env:
+            - name: LICENSE
+              value: accept
+            - name: MQ_QMGR_NAME
+              value: qmgr
+          ports:
+            - containerPort: 1414
+              name: mq
+            - containerPort: 9443
+              name: mq-web
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: mqvol
+              mountPath: /var/mqm
+          imagePullSecrets:
+            - name: mq_registry_secret
+  volumeClaimTemplates:
+    - metadata:
+        name: mqvol
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 20Gi
+        storageClassName: "ocs-external-storagecluster-ceph-rbd"

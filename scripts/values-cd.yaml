@@ -1,0 +1,147 @@
+license: true
+licenseType: "prod"
+env:
+  timezone: "UTC"
+  extraEnvs: []
+
+extraLabels: {}
+
+replicaCount: 1
+
+image:
+  repository: "cp.icr.io/cp/ibm-connectdirect/cdu"
+  tag: "6.3.0.7-iFix022-2026-07-02"
+  imageSecrets: "mycd-ibm-registry-secret"
+  digest:
+    enabled: false
+    value: ""
+  pullPolicy: IfNotPresent
+
+nameOverride: ""
+
+upgradeCompCheck: false
+
+extraVolumeMounts: []
+
+extraVolume: []
+
+arch: "amd64"
+
+cdArgs:
+  nodeName: "CDNODE01"
+  crtName: "cdcert.pem"
+  localCertLabel: "Client-API"
+  cport: 1363
+  sport: 1364
+  configDir: "CDFILES"
+  saclConfig: "n"
+  trustedAddr: []
+
+sum:
+  enabled: "y"
+
+oum:
+  enabled: "y"
+
+storageSecurity:
+  fsGroup: 45678
+  supplementalGroups: [65534]
+  runAsUser: 45678
+  runAsGroup: 45678
+
+persistence:
+  enabled: true
+  useDynamicProvisioning: true
+
+pvClaim:
+  existingClaimName: 
+  storageClassName: ocs-external-storagecluster-ceph-rbd  
+  accessMode: "ReadWriteOnce"
+  selector:
+    label: "intent"
+    value: "cd-vol"
+  size: 1Gi
+
+service:
+  type: "LoadBalancer"
+  apiport:
+    name: "api"
+    port:
+    protocol: "TCP"
+  ftport:
+    name: "ft"
+    port:
+    protocol: "TCP"
+  externalIP: []
+  loadBalancerIP: ""
+  loadBalancerSourceRanges: []
+  annotations: {}
+  externalTrafficPolicy: ""
+  sessionAffinity: "ClientIP"
+
+networkPolicyIngress:
+  enabled: false
+  from: 
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: "connectdirect"
+
+networkPolicyEgress:
+  enabled: true
+  acceptNetPolChange: true
+  to: []
+
+secret:
+  secretName: "mycd-secret"
+  certSecretName: "mycd-cert-secret"
+
+serviceAccount:
+  create: true
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 2000Mi
+    ephemeral-storage: "5Gi"
+  requests:
+    cpu: 500m
+    memory: 2000Mi
+    ephemeral-storage: "3Gi"
+
+dashboard:
+  enabled: true
+
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution: {}
+    preferredDuringSchedulingIgnoredDuringExecution: []
+  podAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution: []
+    preferredDuringSchedulingIgnoredDuringExecution: []
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution: []
+    preferredDuringSchedulingIgnoredDuringExecution: []
+
+startupProbe:
+  initialDelaySeconds: 30
+  timeoutSeconds: 5
+  periodSeconds: 10
+
+livenessProbe:
+  initialDelaySeconds: 5
+  timeoutSeconds: 5
+  periodSeconds: 10
+
+readinessProbe:
+  initialDelaySeconds: 3
+  timeoutSeconds: 5
+  periodSeconds: 10
+
+route:
+  enabled: true
+
+ldap:
+  enabled: false
+
+cdfa:
+  fileAgentEnable: "n"
