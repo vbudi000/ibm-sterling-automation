@@ -29,7 +29,7 @@ persistentVolume:
   existingClaimName: ""
   labelName: ""
   labelValue: ""
-  storageClassName: "ocs-external-storagecluster-ceph-rbd"
+  storageClassName: managed-nfs-storage
   size: 1Gi
   accessMode: "ReadWriteOnce"    
 

@@ -75,7 +75,7 @@ oc create secret generic ${db2_secret} -n ${db2_namespace} \
   --from-literal=DB2INST1_PASSWORD=${db2_password}
 
 my_storage_class="redhat-external"
-file_sc="ocs-external-storagecluster-cephfs"
+file_sc="managed-nfs-storage"
 oc adm policy add-scc-to-user -z mydb2-sa privileged -n ${db2_namespace}
 
 cat << EOF | oc apply -f -
@@ -177,5 +177,5 @@ spec:
         resources:
           requests:
             storage: ${db2_storage_size}
-        storageClassName: "ocs-external-storagecluster-ceph-rbd"
+        storageClassName: "managed-nfs-storage"
 EOF

@@ -39,7 +39,7 @@ appResourcesPVC:
   enabled: false     # must be false if resourcesInit is true
 
 appLogsPVC:
-  storageClassName: "ocs-external-storagecluster-cephfs"
+  storageClassName: managed-nfs-storage
   selector:
     label: "intent"
     value: "logs"
@@ -287,7 +287,7 @@ asi:
     
   ingress:
     internal:
-      host: "asi.dev01.apps.itz-dn4e64.pok-lb.techzone.ibm.com"
+      host: "asi-dev01.apps.vbudi-sterling-b2bi.cp.fyre.ibm.com"
       tls:
         enabled: true
         secretName: ""
@@ -541,7 +541,7 @@ ac:
       
   ingress:
     internal:
-      host: "ac.dev01.{{ route_domain }}"
+      host: "ac-dev01.apps.vbudi-sterling-b2bi.cp.fyre.ibm.com"
       tls:
         enabled: true
         secretName: ""
@@ -774,7 +774,7 @@ api:
 
   ingress:
     internal:
-      host: "api.dev01.apps.itz-dn4e64.pok-lb.techzone.ibm.com"
+      host: "api-dev01.apps.vbudi-sterling-b2bi.cp.fyre.ibm.com"
       tls:
         enabled: true
         secretName: ""

@@ -43,7 +43,7 @@ mq_secret=mymq-secret
 mq_svc_data="${mq_name}-data"
 mq_svc_web="${mq_name}-web"
 mq_route_web="${mq_name}-web"
-mq_rwo_class="ocs-external-storagecluster-ceph-rbd"
+mq_rwo_class="managed-nfs-storage"
 
 # Create Kubernetes namespace
 # -----------------------------------------------------------------------------

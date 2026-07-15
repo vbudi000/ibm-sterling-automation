@@ -9,7 +9,7 @@ minio_root_user="root"
 minio_root_password="passw0rd"
 minio_storage_size="10Gi"
 
-minio_storageclass="ocs-external-storagecluster-ceph-rbd"
+minio_storageclass="managed-nfs-storage"
 
 oc new-project ${minio_namespace}
 
@@ -18,7 +18,7 @@ oc new-project ${minio_namespace}
 oc create secret generic minio-secret -n ${minio_namespace} \
   --from-literal=MINIO_ROOT_USER=${minio_root_user} \
   --from-literal=MINIO_ROOT_PASSWORD=${minio_root_password}
-oc label secret minio-secret app=minio
+oc label secret minio-secret app=minio -n ${minio_namespace}
 
 oc create sa minio-sa -n ${minio_namespace}
 
@@ -46,7 +46,7 @@ EOF
 oc create configmap minio-env -n ${minio_namespace} \
   --from-literal=MINIO_ROOT_USER=${minio_root_user} \
   --from-literal=MINIO_ROOT_PASSWORD=${minio_root_password}
-oc label configmap minio-env app=minio
+oc label configmap minio-env app=minio -n ${minio_namespace}
 
 
 # Apply Deployment

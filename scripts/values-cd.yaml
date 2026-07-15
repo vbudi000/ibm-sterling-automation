@@ -55,7 +55,7 @@ persistence:
 
 pvClaim:
   existingClaimName: 
-  storageClassName: ocs-external-storagecluster-ceph-rbd  
+  storageClassName: managed-nfs-storage
   accessMode: "ReadWriteOnce"
   selector:
     label: "intent"
